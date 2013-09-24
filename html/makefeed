@@ -1,0 +1,22 @@
+#! /usr/bin/python
+
+import os, re
+
+with open('feed.xml', 'w') as f:
+    f.write("<snapshots>\n")
+    for file in sorted(os.listdir('.')):
+        m = re.match(r'^drought-usdm--(\d\d\d\d)-(\d\d)-(\d\d)--480.png$', file)
+        if m:
+            year = m.group(1)
+            month = m.group(2)
+            day = m.group(3)
+            date = "%4s-%2s-%2s" % (year,month,day)
+            f.write("  <snapshot>\n")
+            f.write("    <title>US Drought Monitor for %s</title>\n" % date)
+            f.write("    <year>%s</year>\n" % year)
+            f.write("    <month>%s</month>\n" % month)
+            f.write("    <day>%s</day>\n" % day)
+            f.write("    <image_480>drought-usdm--%s--480.png</image_480>\n" % date)
+            f.write("    <image_620>drought-usdm--%s--620.png</image_620>\n" % date)
+            f.write("  </snapshot>\n")
+    f.write("</snapshots>\n")
